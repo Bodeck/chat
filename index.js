@@ -1,10 +1,12 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const UsersService = require('./UsersService');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+const usersService = new UsersService();
 
 app.use(express.static(`${__dirname}/public`));
 
@@ -25,7 +27,7 @@ io.on('connection', (socket) => {
 });
 
 io.on('connection', (socket) => {
-  socket.on('disconnect', ()=> {
+  socket.on('disconnect', () => {
     usersService.removeUser(socket.id);
     socket.broadcast.emit('update', {
       users: usersService.getAllUsers()
@@ -33,9 +35,9 @@ io.on('connection', (socket) => {
   });
 });
 
-io.on('connection', (socket)=> {
+io.on('connection', (socket) => {
   socket.on('message', (message) => {
-    const {name} = usersService.getUserById(socket.id);
+    const { name } = usersService.getUserById(socket.id);
     socket.broadcast.emit('message', {
       text: message.text,
       from: name

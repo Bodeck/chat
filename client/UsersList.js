@@ -2,7 +2,8 @@ import React from 'react';
 import styles from './UsersList.css';
 
 const UserList = (props) => {
-  <div className={styles.Users}>
+ return (
+ <div className={styles.Users}>
     <div className={styles.UsersOnline}>
       {props.users.length} people online
     </div>
@@ -17,7 +18,7 @@ const UserList = (props) => {
         })
       }
     </ul>
-  </div>
+  </div>)
 }
 
 export default UserList;
